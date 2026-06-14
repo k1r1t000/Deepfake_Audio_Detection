@@ -59,23 +59,23 @@ Standard Mel spectrograms fail on this task because they compress high-frequency
 
 ```
 Input (180, 128, 1)
-    ↓
-Conv2D(32) → BN → Swish → MaxPool(2,2) → SpatialDropout
-    ↓
-Conv2D(64) → BN → Swish → MaxPool(2,2) → SpatialDropout
-    ↓
-Conv2D(128) → BN → Swish → MaxPool(3,2) → SpatialDropout
-    ↓
-Conv2D(128) → BN → Swish → MaxPool(1,2) → SpatialDropout
-    ↓
-Reshape → (15, 1024)
-    ↓
+    
+Conv2D(32) -> BN -> Swish -> MaxPool(2,2) -> SpatialDropout
+    
+Conv2D(64) -> BN -> Swish -> MaxPool(2,2) -> SpatialDropout
+    
+Conv2D(128) -> BN -> Swish -> MaxPool(3,2) -> SpatialDropout
+    
+Conv2D(128) -> BN -> Swish -> MaxPool(1,2) -> SpatialDropout
+    
+Reshape -> (15, 1024)
+    
 BiLSTM(128, return_sequences=True)
-    ↓
+    
 BiLSTM(64)
-    ↓
-Dense(128, swish) → Dropout(0.4)
-    ↓
+    
+Dense(128, swish) -> Dropout(0.4)
+    
 Dense(1, sigmoid)
 ```
 

@@ -34,8 +34,8 @@ def compute_lfcc(audio):
     for m in range(1, N_FILTERS + 1):
         fl, fc, fr = lin_f[m-1], lin_f[m], lin_f[m+1]
         for k, f in enumerate(freqs):
-            if fl <= f <= fc:  fb[m-1, k] = (f  - fl) / (fc - fl + 1e-8)
-            elif fc < f <= fr: fb[m-1, k] = (fr - f)  / (fr - fc + 1e-8)
+            if fl <= f <= fc:  fb[m-1, k] = (f  - fl) /(fc - fl + 1e-8)
+            elif fc < f <= fr: fb[m-1, k] = (fr - f) /(fr - fc + 1e-8)
     log_spec = np.log(np.dot(fb, stft) + 1e-8)
     return dct(log_spec, type=2, axis=0, norm='ortho')[:N_LFCC]
 
@@ -44,26 +44,25 @@ def extract_features(file_path):
     """Extract LFCC + MFCC + Delta-LFCC features. Returns (180, 128, 1)."""
     n = int(SR * DURATION)
     try:
-        audio, _ = librosa.load(file_path, sr=SR, duration=DURATION)
+        audio, _ = librosa.load(file_path,sr=SR,duration=DURATION)
     except Exception as e:
         raise ValueError(f"Could not load audio file: {e}")
 
-    audio = np.pad(audio, (0, max(0, n - len(audio))))[:n]
+    audio = np.pad(audio, (0,max(0, n - len(audio))))[:n]
     # Pre-emphasis filter
     audio = np.append(audio[0], audio[1:] - 0.97 * audio[:-1]).astype(np.float32)
 
     lfcc       = compute_lfcc(audio)
-    mfcc       = librosa.feature.mfcc(y=audio, sr=SR, n_mfcc=N_MFCC,
-                                       n_fft=N_FFT, hop_length=HOP_LENGTH)
+    mfcc       = librosa.feature.mfcc(y=audio, sr=SR, n_mfcc=N_MFCC,n_fft=N_FFT, hop_length=HOP_LENGTH)
     lfcc_delta = librosa.feature.delta(lfcc)
     features   = np.concatenate([lfcc, mfcc, lfcc_delta], axis=0)
 
     T = features.shape[1]
-    features = np.pad(features, ((0,0),(0, max(0, TARGET_FRAMES-T))))[:, :TARGET_FRAMES]
+    features = np.pad(features,((0,0),(0, max(0, TARGET_FRAMES-T))))[:, :TARGET_FRAMES]
 
     # Per-sample normalization
-    mean = features.mean(axis=1, keepdims=True)
-    std  = features.std(axis=1,  keepdims=True) + 1e-6
+    mean = features.mean(axis=1,keepdims=True)
+    std  = features.std(axis=1,keepdims=True) + 1e-6
     features = (features - mean) / std
 
     return features.astype(np.float32)[np.newaxis, ..., np.newaxis]  # (1, 180, 128, 1)
@@ -93,9 +92,9 @@ def predict_audio(file_path, model_path="best_model.keras",
 
     # Extract features and predict
     features = extract_features(file_path)
-    prob     = float(model.predict(features, verbose=0)[0][0])
+    prob= float(model.predict(features, verbose=0)[0][0])
 
-    label      = "Deepfake (AI-Generated)" if prob > threshold else "Genuine (Human)"
+    label = "Deepfake (AI-Generated)" if prob > threshold else "Genuine (Human)"
     confidence = prob if prob > threshold else (1 - prob)
 
     return label, confidence, prob
@@ -104,10 +103,8 @@ def predict_audio(file_path, model_path="best_model.keras",
 def main():
     parser = argparse.ArgumentParser(description="Deepfake Audio Detector")
     parser.add_argument("audio",   type=str, help="Path to audio file (.wav/.flac)")
-    parser.add_argument("--model", type=str, default="best_model.keras",
-                        help="Path to model file")
-    parser.add_argument("--config", type=str, default="model_config.json",
-                        help="Path to config JSON")
+    parser.add_argument("--model", type=str, default="best_model.keras",help="Path to model file")
+    parser.add_argument("--config", type=str, default="model_config.json",help="Path to config JSON")
     args = parser.parse_args()
 
     print(f"\n{'='*45}")

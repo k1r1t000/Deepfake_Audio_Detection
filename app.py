@@ -15,14 +15,14 @@ import librosa.display
 import matplotlib.pyplot as plt
 from scipy.fftpack import dct
 
-# ── Page config ─────────────────────────────────────────────
+# ── Page config ─────────────────────────
 st.set_page_config(
     page_title="Deepfake Audio Detector",
     page_icon="🎙️",
     layout="centered"
 )
 
-# ── Constants ────────────────────────────────────────────────
+# ── Constants ─────────────────────────────
 SR            = 16000
 DURATION      = 4.0
 TARGET_FRAMES = 128
@@ -35,34 +35,33 @@ MODEL_PATH    = "best_model.keras"
 CONFIG_PATH   = "model_config.json"
 
 
-# ── Feature extraction ───────────────────────────────────────
+# ── Feature extraction ────────────────────────
 def compute_lfcc(audio):
     stft  = np.abs(librosa.stft(audio, n_fft=N_FFT, hop_length=HOP_LENGTH)) ** 2
     freqs = librosa.fft_frequencies(sr=SR, n_fft=N_FFT)
     lin_f = np.linspace(0, SR // 2, N_FILTERS + 2)
     fb    = np.zeros((N_FILTERS, len(freqs)))
     for m in range(1, N_FILTERS + 1):
-        fl, fc, fr = lin_f[m-1], lin_f[m], lin_f[m+1]
+        fl, fc,fr = lin_f[m-1], lin_f[m], lin_f[m+1]
         for k, f in enumerate(freqs):
-            if fl <= f <= fc:  fb[m-1, k] = (f  - fl) / (fc - fl + 1e-8)
-            elif fc < f <= fr: fb[m-1, k] = (fr - f)  / (fr - fc + 1e-8)
+            if fl <= f <= fc:  fb[m-1, k] =(f  - fl)/(fc - fl + 1e-8)
+            elif fc < f <= fr: fb[m-1, k] =(fr - f)/(fr - fc + 1e-8)
     return dct(np.log(np.dot(fb, stft) + 1e-8), type=2, axis=0, norm='ortho')[:N_LFCC]
 
 
 def extract_features(file_path):
     n = int(SR * DURATION)
-    audio, _ = librosa.load(file_path, sr=SR, duration=DURATION)
+    audio, _ = librosa.load(file_path,sr=SR,duration=DURATION)
     audio = np.pad(audio, (0, max(0, n - len(audio))))[:n]
     audio = np.append(audio[0], audio[1:] - 0.97 * audio[:-1]).astype(np.float32)
     lfcc       = compute_lfcc(audio)
-    mfcc       = librosa.feature.mfcc(y=audio, sr=SR, n_mfcc=N_MFCC,
-                                       n_fft=N_FFT, hop_length=HOP_LENGTH)
+    mfcc       = librosa.feature.mfcc(y=audio,sr=SR, n_mfcc=N_MFCC,n_fft=N_FFT, hop_length=HOP_LENGTH)
     lfcc_delta = librosa.feature.delta(lfcc)
     features   = np.concatenate([lfcc, mfcc, lfcc_delta], axis=0)
     T = features.shape[1]
-    features = np.pad(features, ((0,0),(0, max(0, TARGET_FRAMES-T))))[:, :TARGET_FRAMES]
-    mean = features.mean(axis=1, keepdims=True)
-    std  = features.std(axis=1,  keepdims=True) + 1e-6
+    features = np.pad(features, ((0,0),(0, max(0,TARGET_FRAMES-T))))[:, :TARGET_FRAMES]
+    mean = features.mean(axis=1,keepdims=True)
+    std  = features.std(axis=1,keepdims=True) + 1e-6
     features = (features - mean) / std
     return features.astype(np.float32)[np.newaxis, ..., np.newaxis], audio
 
@@ -73,7 +72,7 @@ def load_model_and_config():
     model = load_model(MODEL_PATH)
     with open(CONFIG_PATH) as f:
         cfg = json.load(f)
-    return model, cfg
+    return model,cfg
 
 
 # ── UI ───────────────────────────────────────────────────────
@@ -98,11 +97,11 @@ threshold  = cfg["threshold"]
 st.success(" Model loaded successfully")
 
 with st.expander(" Model Performance"):
-    col1, col2, col3 = st.columns(3)
+    col1, col2,col3 = st.columns(3)
     col1.metric("Overall Accuracy", "88.93%")
     col2.metric("EER", "6.78%")
-    col3.metric("ROC AUC", "96.36%")
-    col1.metric("F1 Score", "88.15%")
+    col3.metric("ROC AUC","96.36%")
+    col1.metric("F1 Score","88.15%")
     col2.metric("Real Class Acc", "97.75%")
     col3.metric("Fake Class Acc", "80.51%")
 
@@ -111,7 +110,7 @@ st.divider()
 # File upload
 uploaded = st.file_uploader(
     "Upload Audio File",
-    type=["wav", "flac", "mp3", "ogg"],
+    type=["wav","flac","mp3","ogg"],
     help="Supported formats: WAV, FLAC, MP3, OGG"
 )
 
@@ -142,7 +141,7 @@ if uploaded:
 
             col1, col2 = st.columns(2)
             col1.metric("Fake Probability", f"{prob*100:.1f}%")
-            col2.metric("Result", "Deepfake" if is_fake else "Genuine")
+            col2.metric("Result","Deepfake" if is_fake else "Genuine")
 
             # Confidence bar
             st.markdown("**Detection Confidence:**")
@@ -169,9 +168,8 @@ if uploaded:
             fig2, ax2 = plt.subplots(figsize=(10, 3))
             mel = librosa.feature.melspectrogram(y=audio, sr=SR, n_mels=128)
             mel_db = librosa.power_to_db(mel, ref=np.max)
-            img = librosa.display.specshow(mel_db, sr=SR, hop_length=HOP_LENGTH,
-                                           x_axis="time", y_axis="mel", ax=ax2)
-            fig2.colorbar(img, ax=ax2, format="%+2.0f dB")
+            img = librosa.display.specshow(mel_db, sr=SR, hop_length=HOP_LENGTH,x_axis="time", y_axis="mel", ax=ax2)
+            fig2.colorbar(img,ax=ax2,format="%+2.0f dB")
             ax2.set_title("Mel Spectrogram")
             plt.tight_layout()
             st.pyplot(fig2)

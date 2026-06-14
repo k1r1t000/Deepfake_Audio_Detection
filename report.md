@@ -9,16 +9,16 @@
 
 | Metric | Score | Required | Status |
 |--------|-------|----------|--------|
-| Overall Accuracy | **88.93%** | ≥ 80% |  PASS |
-| Equal Error Rate (EER) | **6.78%** | ≤ 12% |  PASS |
+| Overall Accuracy | **88.93%** | >= 80% |  PASS |
+| Equal Error Rate (EER) | **6.78%** | <= 12% |  PASS |
 
 ### Secondary Metrics
 
 | Metric | Score | Required | Status |
 |--------|-------|----------|--------|
-| F1 Score | **88.15%** | ≥ 80% |  PASS |
-| Real (Genuine) Class Accuracy | **97.75%** | ≥ 75% |  PASS |
-| Fake (Deepfake) Class Accuracy | **80.51%** | ≥ 75% |  PASS |
+| F1 Score | **88.15%** | >= 80% |  PASS |
+| Real (Genuine) Class Accuracy | **97.75%** | >= 75% |  PASS |
+| Fake (Deepfake) Class Accuracy | **80.51%** | >= 75% |  PASS |
 | ROC AUC | **96.36%** | — | — |
 
 **Decision Threshold:** 0.05 (selected by maximizing balanced per-class accuracy on validation set)
@@ -85,7 +85,7 @@ Training stopped at best val_loss via EarlyStopping (patience=5).
 3. **LFCC extraction:** 60 coefficients, linear filterbank (128 filters), FFT=512, hop=160
 4. **MFCC extraction:** 60 coefficients, FFT=512, hop=160
 5. **Delta-LFCC:** First-order temporal derivatives of LFCC
-6. **Feature stacking:** Concatenate → (180, T) feature matrix
+6. **Feature stacking:** Concatenate -> (180, T) feature matrix
 7. **Time normalization:** Pad/trim to 128 frames
 8. **Per-sample normalization:** `(x - mean) / std` per feature dimension
 
@@ -96,10 +96,10 @@ Training stopped at best val_loss via EarlyStopping (patience=5).
 ```
 Input Shape: (180, 128, 1)
 
-CNN Block 1: Conv2D(32, 3×3) → BN → Swish → MaxPool(2,2) → SpatialDropout(0.1)
-CNN Block 2: Conv2D(64, 3×3) → BN → Swish → MaxPool(2,2) → SpatialDropout(0.1)
-CNN Block 3: Conv2D(128,3×3) → BN → Swish → MaxPool(3,2) → SpatialDropout(0.1)
-CNN Block 4: Conv2D(128,3×3) → BN → Swish → MaxPool(1,2) → SpatialDropout(0.1)
+CNN Block 1: Conv2D(32, 3×3) -> BN -> Swish -> MaxPool(2,2) -> SpatialDropout(0.1)
+CNN Block 2: Conv2D(64, 3×3) -> BN -> Swish -> MaxPool(2,2) -> SpatialDropout(0.1)
+CNN Block 3: Conv2D(128,3×3) -> BN -> Swish -> MaxPool(3,2) -> SpatialDropout(0.1)
+CNN Block 4: Conv2D(128,3×3) -> BN -> Swish -> MaxPool(1,2) -> SpatialDropout(0.1)
 
 Reshape: (15, 1024)
 
