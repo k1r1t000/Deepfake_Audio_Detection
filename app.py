@@ -147,6 +147,7 @@ if uploaded:
             st.markdown("**Detection Confidence:**")
             bar_color = "red" if is_fake else "green"
             st.progress(confidence)
+            st.markdown(f"Confidence Score: **{confidence*100:.2f}%**")
 
             # ── Waveform ─────────────────────────────────────
             st.divider()
