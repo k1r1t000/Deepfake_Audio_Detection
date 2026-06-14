@@ -22,7 +22,7 @@ A deep learning system that classifies speech recordings as **Genuine (Human)** 
 [Try the Web App](https://deepfake-audio-detection-j16d.onrender.com/)
 > **NOTE** The deployed version may respond slowly because it is hosted on Render's free CPU-based service. Audio feature extraction and deep learning inference are computationally intensive tasks, so response times can be higher than when running locally.
 
-
+---
 
 **Kaggle Notebook:** [View on Kaggle](https://www.kaggle.com/code/k1r1t00/deepfake-audio-detection)
 
