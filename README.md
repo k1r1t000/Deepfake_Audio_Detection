@@ -20,11 +20,13 @@ A deep learning system that classifies speech recordings as **Genuine (Human)** 
 
 ### Live Demo
 [Try the Web App](https://deepfake-audio-detection-j16d.onrender.com/)
-> **NOTE** The deployed version may respond slowly because it is hosted on Render's free CPU-based service. Audio feature extraction and deep learning inference are computationally intensive tasks, so response times can be higher than when running locally.
+> **NOTE** : The deployed version may respond slowly because it is hosted on Render's free CPU-based service. Audio feature extraction and deep learning inference are computationally intensive tasks, so response times can be higher than when running locally.
 
 ---
 
 **Kaggle Notebook:** [View on Kaggle](https://www.kaggle.com/code/k1r1t00/deepfake-audio-detection)
+
+> **Note:** `notebook.ipynb` in this repo is the same code as the Kaggle notebook above and uses Kaggle input paths (`/kaggle/input/...`). To run it locally, update these paths to point to your local dataset directory, or simply run it directly on Kaggle using the link above.
 
 ## Installation
 
