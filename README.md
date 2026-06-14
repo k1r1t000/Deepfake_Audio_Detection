@@ -9,17 +9,18 @@ A deep learning system that classifies speech recordings as **Genuine (Human)** 
 
 | Metric | Score | Required | Status |
 |--------|-------|----------|--------|
-| Overall Accuracy | 88.93% | ≥ 80% | Pass |
-| Equal Error Rate (EER) | 6.78% | ≤ 12% | Pass |
-| F1 Score | 88.15% | ≥ 80% | Pass |
-| Real Class Accuracy | 97.75% | ≥ 75% | Pass |
-| Fake Class Accuracy | 80.51% | ≥ 75% | Pass |
+| Overall Accuracy | 88.93% | >= 80% | Pass |
+| Equal Error Rate (EER) | 6.78% | <= 12% | Pass |
+| F1 Score | 88.15% | >= 80% | Pass |
+| Real Class Accuracy | 97.75% | >= 75% | Pass |
+| Fake Class Accuracy | 80.51% | >= 75% | Pass |
 | ROC AUC | 96.36% | -- | --|
 
 ---
 
 ### Live Demo
 [Try the Web App](YOUR_STREAMLIT_LINK)
+
 
 
 **Kaggle Notebook:** [View on Kaggle](https://www.kaggle.com/code/k1r1t00/deepfake-audio-detection)
