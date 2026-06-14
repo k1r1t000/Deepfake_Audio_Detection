@@ -1,0 +1,20 @@
+{
+  "threshold": 0.05,
+  "overall_accuracy": 0.6814846784635304,
+  "eer": 0.06775599737591506,
+  "f1_score": 0.5480710349050827,
+  "roc_auc": 0.9636487826333289,
+  "real_class_accuracy": 0.9995583038869258,
+  "fake_class_accuracy": 0.37763713080168776,
+  "feature_shape": [
+    180,
+    128,
+    1
+  ],
+  "sr": 16000,
+  "duration": 4.0,
+  "n_lfcc": 60,
+  "n_mfcc": 60,
+  "n_fft": 512,
+  "hop_length": 160
+}
