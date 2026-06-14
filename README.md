@@ -19,7 +19,7 @@ A deep learning system that classifies speech recordings as **Genuine (Human)** 
 ---
 
 ### Live Demo
-[Try the Web App](https://deepfake-audio-detection-j16d.onrender.com/)
+[Try the Web App](https://huggingface.co/spaces/k1r1t00/deepfake_Audio_Detector)
 > **NOTE** : The deployed version may respond slowly because it is hosted on Render's free CPU-based service. Audio feature extraction and deep learning inference are computationally intensive tasks, so response times can be higher than when running locally.
 
 ---
@@ -144,6 +144,8 @@ python predict.py path/to/audio.wav
 streamlit run app.py
 ```
 
+### Or try online
+[Live Demo on Hugging Face](https://huggingface.co/spaces/k1r1t00/deepfake_Audio_Detector)
 ---
 
 ## Datasets Used
