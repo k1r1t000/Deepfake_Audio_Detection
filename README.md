@@ -20,7 +20,7 @@ A deep learning system that classifies speech recordings as **Genuine (Human)** 
 
 ### Live Demo
 [Try the Web App](https://huggingface.co/spaces/k1r1t00/deepfake_Audio_Detector)
-> **NOTE** : The deployed version may respond slowly because it is hosted on Render's free CPU-based service. Audio feature extraction and deep learning inference are computationally intensive tasks, so response times can be higher than when running locally.
+> **NOTE** : The application is deployed on Hugging Face Spaces. Processing audio and running deep learning models can take a few seconds, so response times may vary depending on server load..
 
 ---
 
